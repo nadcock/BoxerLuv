@@ -1,0 +1,22 @@
+PODS:
+  - ImageSlideshow (1.0.0-beta.1):
+    - ImageSlideshow/Core (= 1.0.0-beta.1)
+  - ImageSlideshow/Core (1.0.0-beta.1)
+  - ImageSlideshow/SDWebImage (1.0.0-beta.1):
+    - ImageSlideshow/Core
+    - SDWebImage (~> 3.7)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+
+DEPENDENCIES:
+  - ImageSlideshow (~> 1.0.0-beta.1)
+  - ImageSlideshow/SDWebImage
+
+SPEC CHECKSUMS:
+  ImageSlideshow: adf31cd12d65c1e78c15d024b9227d56fc46208c
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+
+PODFILE CHECKSUM: 4b595731d303f509f7b76689bb415abc4f7d16f2
+
+COCOAPODS: 1.1.1
