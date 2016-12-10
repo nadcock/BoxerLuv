@@ -51,10 +51,18 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
         
         activityIndicator()
         indicator.startAnimating()
+        retrieveNewAnimals()
         
+        self.refreshControl?.addTarget(self, action: #selector(PetListViewController.handleRefresh), for: UIControlEvents.valueChanged)
+        
+
+    }
+
+    func retrieveNewAnimals() {
         RescueGroupsAPI.sharedInstance().getNewAnimals(){ JSONResult, error  in
             if let error = error {
                 displayAlert(alertMessage: error.localizedDescription)
+                self.indicator.stopAnimating()
             } else {
                 
                 if let animalsDictionary = JSONResult!.value(forKey: RescueGroupsAPI.ResponseKeys.data) as? [String : AnyObject] {
@@ -76,39 +84,46 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
                             }
                             else {
                                 displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalID)")
+                                self.indicator.stopAnimating()
                             }
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalID)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let name = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalName] as? String {
                             dog.name = name
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalName)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let age = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalAgeString] as? String {
                             dog.ageString = age
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalAgeString)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let breed = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalBreed] as? String {
                             dog.breed = breed
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalBreed)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let sex = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalSex] as? String {
                             dog.sex = sex
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalSex)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let color = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalColor] as? String {
                             dog.color = color
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalColor)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if var animalDesc = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalDescriptionPlain] as? String {
@@ -121,6 +136,7 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
                             
                         } else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalDescriptionPlain)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let thumbnail = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalThumbnailUrl] as? String {
@@ -130,12 +146,13 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
                                 
                             }} else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalThumbnailUrl)")
+                            self.indicator.stopAnimating()
                         }
                         
                         if let animalPictures = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalPictures] as?
                             [[String: Any]] {
                             for picture in animalPictures {
-                               let _ = picture.map { (key: String, value: Any) -> Photo? in
+                                let _ = picture.map { (key: String, value: Any) -> Photo? in
                                     if key == "large" {
                                         let largePhotoDictionary = value as! [String: Any]
                                         let image = Photo(context: self.sharedContext)
@@ -155,14 +172,41 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
                     DispatchQueue.main.async {
                         self.indicator.stopAnimating()
                         self.tableView.reloadData()
+                        self.refreshControl?.endRefreshing()
                     }
                 } else {
                     let error = NSError(domain: "Cant find data in \(JSONResult!)", code: 0, userInfo: nil)
                     print(JSONResult!.value(forKey: RescueGroupsAPI.ResponseKeys.data)!)
-                    print(error)
+                    displayAlert(alertMessage: error.localizedDescription)
+                    self.indicator.stopAnimating()
                 }
             }
         }
+    }
+    
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Dog")
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        let predicate = NSPredicate(format: "isFavorite = false")
+        request.sortDescriptors = [sortDescriptor]
+        request.predicate = predicate
+        
+        var notFavoritedAnimals: [Dog] = []
+        
+        do {
+            notFavoritedAnimals = try sharedContext.fetch(request) as! [Dog]
+        } catch {
+            fatalError("Failed to fetch employees: \(error)")
+        }
+        
+        for dog in notFavoritedAnimals {
+            sharedContext.delete(dog)
+        }
+        
+        
+        retrieveNewAnimals()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
