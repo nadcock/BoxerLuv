@@ -4,9 +4,9 @@ BoxerLuv is a mobile app designed for the Boxer rescue organization of the same 
 
 <p align="center">
   <img src="/..//screenshots-hidden/Screenshot%202016-12-09%2018.40.55.png" width="200"/>
-  <img src="/..//screenshots-hidden/Screenshot%202016-12-09%2018.41.06.png" width="200"/>
-  <img src="/..//screenshots-hidden/Screenshot%202016-12-09%2018.41.12.png" width="200"/>
   <img src="/..//screenshots-hidden/Screenshot%202016-12-09%2018.41.28.png" width="200"/>
+  <img src="/..//screenshots-hidden/Screenshot%202016-12-09%2018.41.06.png" width="200"/>
+  <img src="/..//screenshots-hidden/Screenshot%202016-12-09%2018.41.12.png" width="200"/>  
 </p>
 
 ## To Install and Run
