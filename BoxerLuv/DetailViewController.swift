@@ -24,10 +24,12 @@ class DetailViewController: UIViewController {
     @IBOutlet var favoriteButton: DOFavoriteButton!
     
     var dog: Dog?
+    var inFullScreenView = false
     
     override func viewWillAppear(_ animated: Bool) {
         
         navigationController?.isNavigationBarHidden = false
+        inFullScreenView = false
         
         if let dog = dog {
             animalName.text = dog.name
@@ -71,7 +73,9 @@ class DetailViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        navigationController?.popViewController(animated: false)
+        if !inFullScreenView {
+            navigationController?.popViewController(animated: false)
+        }
     }
     
     var sharedContext: NSManagedObjectContext {
@@ -80,6 +84,7 @@ class DetailViewController: UIViewController {
     }
     
     func didTap() {
+        inFullScreenView = true
         slideshow.presentFullScreenController(from: self)
     }
     
