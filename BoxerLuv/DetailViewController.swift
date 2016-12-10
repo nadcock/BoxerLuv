@@ -32,6 +32,8 @@ class DetailViewController: UIViewController {
         inFullScreenView = false
         
         if let dog = dog {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
             animalName.text = dog.name
             animalAge.text = "Age:\n  \(dog.ageString!)"
             animalBreed.text = "Breed:\n  \(dog.breed!)"
@@ -69,6 +71,7 @@ class DetailViewController: UIViewController {
             let recognizer = UITapGestureRecognizer(target: self, action: #selector(DetailViewController.didTap))
             slideshow.addGestureRecognizer(recognizer)
             favoriteButton.addTarget(self, action: #selector(DetailViewController.favTapped), for: .touchUpInside)
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }
     }
     
