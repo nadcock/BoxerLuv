@@ -345,19 +345,19 @@ public class DOFavoriteButton: UIButton {
         self.addTarget(self, action: #selector(DOFavoriteButton.touchCancel), for: UIControlEvents.touchCancel)
     }
 
-    func touchDown(sender: DOFavoriteButton) {
+    @objc func touchDown(sender: DOFavoriteButton) {
         self.layer.opacity = 0.4
     }
-    func touchUpInside(sender: DOFavoriteButton) {
+    @objc func touchUpInside(sender: DOFavoriteButton) {
         self.layer.opacity = 1.0
     }
-    func touchDragExit(sender: DOFavoriteButton) {
+    @objc func touchDragExit(sender: DOFavoriteButton) {
         self.layer.opacity = 1.0
     }
-    func touchDragEnter(sender: DOFavoriteButton) {
+    @objc func touchDragEnter(sender: DOFavoriteButton) {
         self.layer.opacity = 0.4
     }
-    func touchCancel(sender: DOFavoriteButton) {
+    @objc func touchCancel(sender: DOFavoriteButton) {
         self.layer.opacity = 1.0
     }
 

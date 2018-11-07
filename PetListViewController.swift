@@ -184,7 +184,7 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
         }
     }
     
-    func handleRefresh(_ refreshControl: UIRefreshControl) {
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Dog")
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         let predicate = NSPredicate(format: "isFavorite = false")

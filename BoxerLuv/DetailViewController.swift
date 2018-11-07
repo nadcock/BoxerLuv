@@ -86,12 +86,12 @@ class DetailViewController: UIViewController {
         return delegate.stack.context
     }
     
-    func didTap() {
+    @objc func didTap() {
         inFullScreenView = true
         slideshow.presentFullScreenController(from: self)
     }
     
-    func favTapped(sender: DOFavoriteButton) {
+    @objc func favTapped(sender: DOFavoriteButton) {
         if sender.isSelected {
             // deselect
             if let dog = dog {

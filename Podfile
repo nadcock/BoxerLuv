@@ -3,7 +3,7 @@
 
 target 'BoxerLuv' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  pod 'ImageSlideshow', '~> 1.0.0-beta.1'
+  pod 'ImageSlideshow', '~> 1.1.0'
   pod 'ImageSlideshow/SDWebImage'
   use_frameworks!
 
