@@ -1,22 +1,27 @@
 PODS:
-  - ImageSlideshow (1.0.0-beta.1):
-    - ImageSlideshow/Core (= 1.0.0-beta.1)
-  - ImageSlideshow/Core (1.0.0-beta.1)
-  - ImageSlideshow/SDWebImage (1.0.0-beta.1):
+  - ImageSlideshow (1.7.0):
+    - ImageSlideshow/Core (= 1.7.0)
+  - ImageSlideshow/Core (1.7.0)
+  - ImageSlideshow/SDWebImage (1.7.0):
     - ImageSlideshow/Core
-    - SDWebImage (~> 3.7)
-  - SDWebImage (3.8.2):
-    - SDWebImage/Core (= 3.8.2)
-  - SDWebImage/Core (3.8.2)
+    - SDWebImage (< 5.0, >= 3.7)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
 
 DEPENDENCIES:
-  - ImageSlideshow (~> 1.0.0-beta.1)
+  - ImageSlideshow (~> 1.7.0)
   - ImageSlideshow/SDWebImage
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ImageSlideshow
+    - SDWebImage
+
 SPEC CHECKSUMS:
-  ImageSlideshow: adf31cd12d65c1e78c15d024b9227d56fc46208c
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  ImageSlideshow: f8eec5e37a980f60923b585ff23b0e140fd24018
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
-PODFILE CHECKSUM: 4b595731d303f509f7b76689bb415abc4f7d16f2
+PODFILE CHECKSUM: 5642c62692ab84e30542220367f7791dac9ee4d8
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3

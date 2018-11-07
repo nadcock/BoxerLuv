@@ -11,7 +11,7 @@ import UIKit
 
 // Mapping from XML/HTML character entity reference to character
 // From http://stackoverflow.com/questions/25607247/how-do-i-decode-html-entities-in-swift
-private let characterEntities : [ String : Character ] = [
+private let characterEntities : [ Substring : Character ] = [
     // XML predefined entities:
     "&quot;"    : "\"",
     "&amp;"     : "&",
@@ -38,7 +38,7 @@ extension String {
         // Unicode character, e.g.
         //    decodeNumeric("64", 10)   --> "@"
         //    decodeNumeric("20ac", 16) --> "€"
-        func decodeNumeric(_ string : String, base : Int) -> Character? {
+        func decodeNumeric(_ string : Substring, base : Int) -> Character? {
             guard let code = UInt32(string, radix: base),
                 let uniScalar = UnicodeScalar(code) else { return nil }
             return Character(uniScalar)
@@ -50,12 +50,12 @@ extension String {
         //     decode("&#x20ac;") --> "€"
         //     decode("&lt;")     --> "<"
         //     decode("&foo;")    --> nil
-        func decode(_ entity : String) -> Character? {
+        func decode(_ entity : Substring) -> Character? {
             
-            if entity.hasPrefix("&#x") || entity.hasPrefix("&#X"){
-                return decodeNumeric(entity.substring(with: entity.index(entity.startIndex, offsetBy: 3) ..< entity.index(entity.endIndex, offsetBy: -1)), base: 16)
+            if entity.hasPrefix("&#x") || entity.hasPrefix("&#X") {
+                return decodeNumeric(entity.dropFirst(3).dropLast(), base: 16)
             } else if entity.hasPrefix("&#") {
-                return decodeNumeric(entity.substring(with: entity.index(entity.startIndex, offsetBy: 2) ..< entity.index(entity.endIndex, offsetBy: -1)), base: 10)
+                return decodeNumeric(entity.dropFirst(2).dropLast(), base: 10)
             } else {
                 return characterEntities[entity]
             }
@@ -67,29 +67,28 @@ extension String {
         var position = startIndex
         
         // Find the next '&' and copy the characters preceding it to `result`:
-        while let ampRange = self.range(of: "&", range: position ..< endIndex) {
-            result.append(String(self[position ..< ampRange.lowerBound]))
+        while let ampRange = self[position...].range(of: "&") {
+            result.append(contentsOf: self[position ..< ampRange.lowerBound])
             position = ampRange.lowerBound
             
             // Find the next ';' and copy everything from '&' to ';' into `entity`
-            if let semiRange = self.range(of: ";", range: position ..< endIndex) {
-                let entity = self[position ..< semiRange.upperBound]
-                position = semiRange.upperBound
-                
-                if let decoded = decode(String(entity)) {
-                    // Replace by decoded character:
-                    result.append(decoded)
-                } else {
-                    // Invalid entity, copy verbatim:
-                    result.append(entity)
-                }
-            } else {
+            guard let semiRange = self[position...].range(of: ";") else {
                 // No matching ';'.
                 break
             }
+            let entity = self[position ..< semiRange.upperBound]
+            position = semiRange.upperBound
+            
+            if let decoded = decode(entity) {
+                // Replace by decoded character:
+                result.append(decoded)
+            } else {
+                // Invalid entity, copy verbatim:
+                result.append(contentsOf: entity)
+            }
         }
         // Copy remaining characters to `result`:
-        result.append(String(self[position ..< endIndex]))
+        result.append(contentsOf: self[position...])
         return result
     }
 }

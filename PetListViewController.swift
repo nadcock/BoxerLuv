@@ -142,7 +142,7 @@ class PetListViewController: UITableViewController, NSFetchedResultsControllerDe
                         if let thumbnail = dictionary[RescueGroupsAPI.ResponseKeys.dataKeys.animalThumbnailUrl] as? String {
                             RescueGroupsAPI().downloadPhoto(url: thumbnail, managedObject: dog) { (managedObject: NSManagedObject, photo: NSData) in
                                 let dog = managedObject as! Dog
-                                dog.thumbnail = photo
+                                dog.thumbnail = photo as Data
                                 
                             }} else {
                             displayAlert(alertMessage: "Error saving \(RescueGroupsAPI.ResponseKeys.dataKeys.animalThumbnailUrl)")
