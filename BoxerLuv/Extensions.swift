@@ -101,8 +101,8 @@ func performUIUpdatesOnMain(updates: @escaping () -> Void) {
 
 func displayAlert(alertMessage: String) {
     performUIUpdatesOnMain {
-        let alertController = UIAlertController(title: "Error", message: alertMessage, preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil ))
+        let alertController = UIAlertController(title: "Error", message: alertMessage, preferredStyle: UIAlertController.Style.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.default, handler: nil ))
         UIApplication.shared.keyWindow?.rootViewController!.present(alertController, animated: true, completion: nil)
     }
 }

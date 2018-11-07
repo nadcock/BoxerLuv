@@ -40,7 +40,7 @@ class FavoriteViewController: UITableViewController, NSFetchedResultsControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.contentInset = UIEdgeInsetsMake(10, 0, self.bottomLayoutGuide.length, 0)
+        tableView.contentInset = UIEdgeInsets.init(top: 10, left: 0, self.bottom: bottomLayoutGuide.length, right: 0)
         
         tableView.delegate = self
         tableView.dataSource = self
